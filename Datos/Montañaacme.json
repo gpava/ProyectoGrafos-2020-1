@@ -1,0 +1,214 @@
+{
+    "acme": [
+      {
+        "cuevas": [
+          {
+            "nombre": "Silvestre",
+            "conexion": [
+              {
+                "nombre": "Piolin",
+                "peso": 10
+              },
+              {
+                "nombre": "Tazmania",
+                "peso": 15
+              }
+            ],
+            "coordenates": {
+              "x": 140,
+              "y": 55
+            }
+          },
+          {
+            "nombre": "Tazmania",
+            "conexion": [
+              {
+                "nombre": "Silvestre",
+                "peso": 15
+              },
+              {
+                "nombre": "Yayita",
+                "peso": 16
+              },
+              {
+                "nombre": "Bunny",
+                "peso": 33
+              },
+              {
+                "nombre": "Coyote",
+                "peso": 21
+              }
+            ],
+            "coordenates": {
+              "x": 400,
+              "y": 70
+            }
+          },
+          {
+
+            "nombre": "Yayita",
+            "conexion": [
+              {
+                "nombre": "Piolin",
+
+                "peso": 25
+              },
+              {
+                "nombre": "Tazmania",
+
+                "peso": 16
+              },
+              {
+                "nombre": "Bunny",
+
+                "peso": 22
+              }
+            ],
+            "coordenates": {
+              "x": 400,
+              "y": 200
+            }
+          },
+          {
+            "nombre": "Coyote",
+            "conexion": [
+              {
+                "nombre": "Tazmania",
+
+                "peso": 21
+              },
+              {
+                "nombre": "Marvin",
+
+                "peso": 58
+              }
+            ],
+            "coordenates": {
+              "x": 680,
+              "y": 62
+            }
+          },
+          {
+            "nombre": "Piolin",
+            "conexion": [
+              {
+                "nombre": "Silvestre",
+                "peso": 10
+              },
+              {
+                "nombre": "Popeye",
+
+                "peso": 30
+              },
+              {
+                "nombre": "Yayita",
+
+                "peso": 25
+              }
+            ],
+            "coordenates": {
+              "x": 150,
+              "y": 200
+            }
+          },
+          {
+            "nombre": "Bunny",
+            "conexion": [
+              {
+                "nombre": "Tazmania",
+
+                "peso": 33
+              },
+              {
+                "nombre": "Marvin",
+
+                "peso": 2
+              },
+              {
+                "nombre": "Yayita",
+
+                "peso": 22
+              },
+              {
+                "nombre": "Correcaminos",
+
+                "peso": 60
+              }
+            ],
+            "coordenates": {
+              "x": 600,
+              "y": 220
+            }
+          },
+          {
+             "nombre": "Popeye",
+            "conexion": [
+              {
+                "nombre": "Piolin",
+
+                "peso": 30
+              },
+              {
+                "nombre": "Correcaminos",
+
+                "peso":5
+              }
+            ],
+            "coordenates": {
+              "x": 160,
+              "y": 356
+            }
+
+          },
+          {
+             "nombre": "Marvin",
+            "conexion": [
+              {
+                "nombre": "Coyote",
+
+                "peso": 58
+              },
+              {
+                "nombre": "Bunny",
+
+                "peso": 2
+              },
+              {
+                "nombre": "Correcaminos",
+
+                "peso": 44
+              }
+            ],
+            "coordenates": {
+              "x": 740,
+              "y": 380
+            }
+          },
+            {
+
+            "nombre": "Correcaminos",
+            "conexion": [
+              {
+                "nombre": "Popeye",
+                "peso": 5
+              },
+              {
+                "nombre": "Bunny",
+
+                "peso": 60
+              },
+
+              {
+                "nombre": "Marvin",
+
+                "peso": 44
+              }
+            ],
+            "coordenates": {
+              "x": 404,
+              "y": 400
+            }
+          }
+         ]
+      }]
+}
