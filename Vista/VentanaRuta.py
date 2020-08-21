@@ -3,13 +3,13 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 
-class VentanaObstruir:
+class VentanaRuta:
 
     def __init__(self, app):
         self.res = False
         self.t1 = Toplevel(app)
         self.t1.geometry('400x400')
-        self.t1.title('Obstruir o Desbloquear Camino')
+        self.t1.title('Ingrese la Ruta')
         self.imagen = Image.open("../Imagenes/fondo3.png")  # fondo
         imagen_de_fondo = ImageTk.PhotoImage(self.imagen)
         fondo = Label(self.t1, image=imagen_de_fondo)

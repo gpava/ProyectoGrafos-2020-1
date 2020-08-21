@@ -17,14 +17,16 @@ class InfoInaccesible():
         self.t1.transient(master=app)
 
         Label(self.t1,
-              text="Las Cuevas Inaccesibles son ", font=("Verdana", 9)).pack(padx=10, pady=10)
+              text="Las Cuevas Inaccesibles son ", font=("Verdana", 12)).pack(padx=10, pady=10)
 
         for i in listafuentes:
             Label(self.t1,
-                  text=i.getDato(), font=("Verdana", 9)).pack(padx=10, pady=10)
+                  text=i.getDato(), font=("Verdana", 12)).pack(padx=10, pady=10)
+
             Label(self.t1,
-                  text="Se Recomienda Conectar a "+"\n"+i.getDato()+"\n"+"Con", font=("Verdana", 9)).pack(padx=10, pady=10)
+                  text="Se Recomienda Conectar a "+"\n"+i.getDato()+" con", font=("Verdana", 12)).pack(padx=10, pady=10)
+
             for j in i.getListaAdyacentes():
-              Label(self.t1,text=j.getDato(),font=("Verdana", 9)).pack(padx=10, pady=10)
+              Label(self.t1,text=j,font=("Verdana", 12)).pack(padx=10, pady=10)
 
         self.t1.wait_window(self.t1)

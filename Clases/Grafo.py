@@ -16,11 +16,17 @@ class Grafo():
     def getFuentes(self):
         return self.fuentes
 
+    def setFuentes(self,fuente):
+         self.fuentes = fuente
+
     def getListaFuentes(self):
         return self.ListaFuentes
 
     def getPozos(self):
         return self.pozos
+
+    def setPozos(self,pozos):
+        self.pozos = pozos
 
     def getListaBloqueados(self):
         return self.ListaBloqueados
@@ -135,6 +141,12 @@ class Grafo():
                 self.ListaFuentes.append(Vertice)
                 self.fuentes = self.fuentes + 1
         return self.fuentes
+
+    def fuentesgrafo(self):
+        for Vertice in self.ListaVertices:
+            if not Vertice.getListaIncidentes():
+                self.ListaFuentes.append(Vertice)
+                self.fuentes = self.fuentes + 1
 
     def esfdconexo(self,pozos,fuentes):
         if(pozos!=0 or fuentes!=0):
@@ -333,3 +345,79 @@ class Grafo():
             return temp[0]  # es la menor
 
         return None  # es la menor
+
+
+    def caminoMasCorto(self, origen, destino):
+        VerticesAux = []
+        VerticesD = []
+        caminos = self.dijkstra(origen, VerticesAux)
+        cont = 0
+        for i in caminos:
+            print("La distancia mínima a: " + self.ListaVertices[cont].getDato() + " es " + str(i))
+            cont = cont + 1
+        self.rutas(VerticesD, VerticesAux, destino, origen)
+        print("El camino más corto de: " + origen + " a " + destino + " es: ")
+        print(VerticesD)
+        return VerticesD
+
+    def rutas(self,VerticesD, VerticesAux, destino, origen):
+        verticeDestino = self.obtenervertice(destino)
+        indice = self.ListaVertices.index(verticeDestino)
+        if VerticesAux[indice] is None:
+            print("No hay camino entre: ", (origen, destino))
+            return
+        aux = destino
+        while aux is not origen:
+            verticeDestino = self.obtenervertice(aux)
+            indice = self.ListaVertices.index(verticeDestino)
+            VerticesD.insert(0, aux)
+            aux = VerticesAux[indice]
+        VerticesD.insert(0, aux)
+
+    def dijkstra(self, origen, VerticesAux):
+        marcados = []  # la lista de los que ya hemos visitado
+        caminos = []  # la lista final
+        # iniciar los valores en infinito
+        for v in self.ListaVertices:
+            caminos.append(float("inf"))
+            marcados.append(False)
+            VerticesAux.append(None)
+            if v.getDato() is origen:
+                caminos[self.ListaVertices.index(v)] = 0
+                VerticesAux[self.ListaVertices.index(v)] = v.getDato()
+        while not self.todosMarcados(marcados):
+            aux = self.menorNoMarcado(caminos, marcados)  # obtuve el menor no marcado
+            if aux is None:
+                break
+            indice = self.ListaVertices.index(aux)  # indice del menor no marcado
+            marcados[indice] = True  # marco como visitado
+            valorActual = caminos[indice]
+            for vAdya in aux.getListaAdyacentes():
+                indiceNuevo = self.ListaVertices.index(self.obtenervertice(vAdya))
+                arista = self.obtenerarista(vAdya, aux.getDato())
+                if caminos[indiceNuevo] > valorActual + arista.getPeso():
+                    caminos[indiceNuevo] = valorActual + arista.getPeso()
+                    VerticesAux[indiceNuevo] = self.ListaVertices[indice].getDato()
+        return caminos
+
+    def menorNoMarcado(self, caminos, marcados):
+        verticeMenor = None
+        caminosAux = sorted(caminos)
+        copiacaminos = copy(caminos)
+        bandera = True
+        contador = 0
+        while bandera:
+            menor = caminosAux[contador]
+            if marcados[copiacaminos.index(menor)] == False:
+                verticeMenor = self.ListaVertices[copiacaminos.index(menor)]
+                bandera = False
+            else:
+                copiacaminos[copiacaminos.index(menor)] = "x"
+                contador = contador + 1
+        return verticeMenor
+
+    def todosMarcados(self, marcados):
+        for j in marcados:
+            if j is False:
+                return False
+        return True
