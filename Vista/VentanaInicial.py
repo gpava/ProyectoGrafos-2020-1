@@ -134,7 +134,11 @@ class VentanaInicial:
             else:
                 messagebox.showwarning('Advertencia',
                      'Los datos ingresados no son validos en''\nla base de información''\n\nVerifique los datos ingresados!')
+            print("--------------------------")
+            self.grafo.imprimirvertice()
+            print("---------------------------")
             self.grafo.imprimiraristas()
+            print(self.grafo.getListaFuentes())
 
     def fdconexo(self):
         p = self.grafo.numerodepozos()

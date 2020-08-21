@@ -5,7 +5,6 @@ from Proyecto20201.Clases.Arista import *
 
 class Grafo():
     def __init__(self):
-        self.grafodirigido=False
         self.pozos = 0
         self.fuentes = 0
         self.ListaFuentes=[]
@@ -22,9 +21,6 @@ class Grafo():
 
     def getPozos(self):
         return self.pozos
-
-    def getgrafoDirigido(self):
-        return self.grafodirigido
 
     def getListaBloqueados(self):
         return self.ListaBloqueados
@@ -92,7 +88,6 @@ class Grafo():
                     self.ListaAristas.append(Arista(destino, origen, peso))
                     self.obtenervertice(destino).getListaAdyacentes().append(origen)
                     self.obtenervertice(origen).getListaIncidentes().append(destino)
-                    self.grafodirigido=False
 
     def obtenerarista(self,origen,destino):
         for Arista in self.ListaAristas:
@@ -130,15 +125,15 @@ class Grafo():
 
     def numerodepozos(self):
         for Vertice in self.ListaVertices:
-            if(not Vertice.getListaAdyacentes()):
+            if not Vertice.getListaAdyacentes():
                 self.pozos=self.pozos+1
         return self.pozos
 
     def numerodefuentes(self):
         for Vertice in self.ListaVertices:
-            if(not Vertice.getListaIncidentes()):
+            if not Vertice.getListaIncidentes():
                 self.ListaFuentes.append(Vertice)
-                self.fuentes=self.fuentes+1
+                self.fuentes = self.fuentes + 1
         return self.fuentes
 
     def esfdconexo(self,pozos,fuentes):
