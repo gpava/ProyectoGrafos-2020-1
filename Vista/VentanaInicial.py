@@ -23,8 +23,8 @@ class VentanaInicial:
         self.ventana = Tk()
         self.ventana.title('Estructuras de Datos: Montaña Acme')
         self.ventana.geometry("1200x614")
-        self.ventana.resizable(0, 0)
-        self.ventana.config(bg="#4A7B0E")
+        #self.ventana.resizable(0, 0)
+        #self.ventana.config(bg="#4A7B0E")
         self.imagen = Image.open("../Imagenes/fondo.png")  # fondo
         imagen_de_fondo = ImageTk.PhotoImage(self.imagen)
         fondo = Label(self.ventana, image=imagen_de_fondo)
@@ -124,14 +124,17 @@ class VentanaInicial:
                 if self.grafo.verificarvertice(app.origen2):
                     if app.origen3 == "si":
                         self.grafo.ingresararista(app.origen, app.origen2, int(app.origen4), True)
+                        verticenuevo = self.grafo.obtenervertice(app.origen)
+                        self.pintarnuevaconexion(app.origen, app.origen2, int(app.origen4))
+                        self.pintarnuevacueva(verticenuevo)
                     elif app.origen3 == "no":
                         self.grafo.ingresararista(app.origen, app.origen2, int(app.origen4), False)
+                        verticenuevo = self.grafo.obtenervertice(app.origen)
+                        self.pintarnuevaconexion(app.origen, app.origen2, int(app.origen4))
+                        self.pintarnuevacueva(verticenuevo)
                     else:
                         messagebox.showwarning('Advertencia',
                               'Los datos ingresados no son validos en''\nla base de información''\n\nVerifique los datos ingresados!')
-                    verticenuevo = self.grafo.obtenervertice(app.origen)
-                    self.pintarnuevaconexion(app.origen,app.origen2,int(app.origen4))
-                    self.pintarnuevacueva(verticenuevo)
             else:
                 messagebox.showwarning('Advertencia',
                      'Los datos ingresados no son validos en''\nla base de información''\n\nVerifique los datos ingresados!')
@@ -226,12 +229,12 @@ class VentanaInicial:
             else:
                 messagebox.showwarning('Advertencia',
                      'Los datos ingresados no son ''\nvalidos, por favor ''\n\nVerifique los datos ingresados!')
-        """print("------------------")
+        print("------------------")
         self.grafo.imprimiraristas()
         print("--------------------")
         for Arista in self.grafo.getListaBloqueados():
             print("Origen: {0} - Destino: {1} - Peso: {2}".format(Arista.getOrigen(), Arista.getDestino(),
-                                                                  Arista.getPeso()))"""
+                                                                  Arista.getPeso()))
 
     def pintarCaminoBloqueado(self, verticeOrigen, verticeDestino):
         coordenatesO = verticeOrigen.getCoordenates()
@@ -281,17 +284,20 @@ class VentanaInicial:
     def recorridoanchuraCuevas(self,dato):
         if self.grafo.verificarvertice(dato):
             self.listaanchura = self.grafo.amplitud(dato)
-            self.pintarrecorrido(self.listaanchura)
+            self.grafo.setFuentes(0)
+            self.grafo.setListaFuentes([])
             self.grafo.fuentesgrafo()
+            self.grafo.inaccesible(self.grafo.getListaFuentes())
+            self.pintarrecorrido(self.listaanchura)
             if self.grafo.getListaFuentes():
-                InfoInaccesible(self.ventana,self.grafo.getListaFuentes())
+                InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
         else:
             messagebox.showwarning('Advertencia',
                              'Los datos ingresados no se encuentran en''\nla base de información''\n\nVerifique los datos ingresados!')
 
     def pintarrecorrido(self, listaRecorrido):
         for cont in range(len(listaRecorrido) - 1):
-            time.sleep(1)
+            #time.sleep(1)
             o=self.grafo.obtenervertice(listaRecorrido[cont])
             coordenatesO = o.getCoordenates()
             xO = coordenatesO[0]
@@ -322,6 +328,14 @@ class VentanaInicial:
             self.recorridoprofundidadCuevas(prof.origen)
 
     def rutamascorta(self):
+        self.grafo.setFuentes(0)
+        self.grafo.setListaFuentes([])
+        self.grafo.fuentesgrafo()
+        self.grafo.inaccesible(self.grafo.getListaFuentes())
+        #si hay fuentes ir a dijsktra dirigido
+        if self.grafo.getListaFuentes():
+            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
+        #ventana de la ruta mas corta
         venta = VentanaRuta(self.ventana)
         if venta.res:
             if self.grafo.verificarvertice(venta.origen) and self.grafo.verificarvertice(venta.destino):
@@ -329,9 +343,6 @@ class VentanaInicial:
                 ddestino = self.grafo.obtenervertice(venta.destino)
                 listauxiliar = self.grafo.caminoMasCorto(dorigen.getDato(), ddestino.getDato())
                 self.pintarrecorrido(listauxiliar)
-                self.grafo.fuentesgrafo()
-                if self.grafo.getListaFuentes():
-                    InfoInaccesible(self.ventana, self.grafo.getListaFuentes())
             else:
                 messagebox.showwarning('Advertencia',
                                         'Los datos ingresados no se encuentran en''\nla base de información''\n\nVerifique los datos ingresados!')
@@ -339,37 +350,58 @@ class VentanaInicial:
     def recorridoprofundidadCuevas(self,dato):
         if self.grafo.verificarvertice(dato):
             self.grafo.profundidad(dato)
-            self.pintarrecorrido(self.grafo.getListaVisitados())
+            self.grafo.setFuentes(0)
+            self.grafo.setListaFuentes([])
             self.grafo.fuentesgrafo()
+            self.grafo.inaccesible(self.grafo.getListaFuentes())
+            self.pintarrecorrido(self.grafo.getListaVisitados())
             if self.grafo.getListaFuentes():
-                InfoInaccesible(self.ventana,self.grafo.getListaFuentes())
+                InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
         else:
             messagebox.showwarning('Advertencia',
                          'Los datos ingresados no se encuentran en''\nla base de información''\n\nVerifique los datos ingresados!')
 
-    def recorridoPrim(self):
+    """def recorridoPrim(self):
         prim = VentanaCaminos(self.ventana)
         if prim.res:
             self.recorridoPrimCuevas(prim.origen)
-
+            
     def recorridoPrimCuevas(self,dato):
         if self.grafo.verificarvertice(dato):
-            self.pintarrecorridominimo(self.grafo.Prim(dato))
+            self.grafo.setFuentes(0)
+            self.grafo.setListaFuentes([])
             self.grafo.fuentesgrafo()
+            self.grafo.inaccesible(self.grafo.getListaFuentes())
+            self.pintarrecorridominimo(self.grafo.Prim(dato))
             if self.grafo.getListaFuentes():
-                InfoInaccesible(self.ventana, self.grafo.getListaFuentes())
+                InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())"""
+
+    def recorridoPrim(self):
+        self.grafo.setFuentes(0)
+        self.grafo.setListaFuentes([])
+        self.grafo.fuentesgrafo()
+        self.grafo.inaccesible(self.grafo.getListaFuentes())
+        self.pintarrecorridominimo(self.grafo.arbolPrim())
+        if self.grafo.getListaFuentes():
+            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
 
     def recorridokruskal(self):
-        self.pintarrecorridominimo(self.grafo.Kruskal())
+        self.grafo.setFuentes(0)
+        self.grafo.setListaFuentes([])
         self.grafo.fuentesgrafo()
+        self.grafo.inaccesible(self.grafo.getListaFuentes())
+        self.pintarrecorridominimo(self.grafo.Kruskal())
         if self.grafo.getListaFuentes():
-            InfoInaccesible(self.ventana, self.grafo.getListaFuentes())
+            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(),self.grafo.getListaBloqueados())
 
     def recorridoboruvka(self):
-        self.pintarrecorridominimo(self.grafo.Boruvka())
+        self.grafo.setFuentes(0)
+        self.grafo.setListaFuentes([])
         self.grafo.fuentesgrafo()
+        self.grafo.inaccesible(self.grafo.getListaFuentes())
+        self.pintarrecorridominimo(self.grafo.Boruvka())
         if self.grafo.getListaFuentes():
-            InfoInaccesible(self.ventana, self.grafo.getListaFuentes())
+            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(),self.grafo.getListaBloqueados())
 
     def pintarrecorridominimo(self, listaAristas):
         for arista in listaAristas:

@@ -22,6 +22,9 @@ class Grafo():
     def getListaFuentes(self):
         return self.ListaFuentes
 
+    def setListaFuentes(self,lista):
+        self.ListaFuentes = lista
+
     def getPozos(self):
         return self.pozos
 
@@ -142,6 +145,12 @@ class Grafo():
                 self.fuentes = self.fuentes + 1
         return self.fuentes
 
+    def inaccesible(self,ListaFuentes):
+        for fuente in ListaFuentes:
+            for adya in fuente.getListaAdyacentes():
+                self.agregarBloqueada(fuente.getDato(), adya)
+                self.eliminarArista(fuente.getDato(), adya)
+
     def fuentesgrafo(self):
         for Vertice in self.ListaVertices:
             if not Vertice.getListaIncidentes():
@@ -213,6 +222,81 @@ class Grafo():
         self.ordenamiento(listaAristasaux)
         aristaMenor = listaAristasaux[0]
         return aristaMenor
+
+    def arbolPrim(self):
+        CopiaAristas = copy(self.ListaAristas)
+        Conjunto = []  # almacena los vertices que voy visitando
+        AristasTemp = []  # Aristas temporales (las amarillas)
+        Aristasprim = []  # Aristas que van a hacer parte de prim (verdes)
+
+        # self.nodirigido(CopiaAristas) #convierte a grafo no dirigido
+        self.ordenamiento(CopiaAristas)
+        self.repetidos(CopiaAristas)  # convierte a un grafo dirigido
+
+        menor = CopiaAristas[0]  # Arista menor
+        Conjunto.append(menor.getOrigen())  # guardo el primer vertice
+
+        pos = True
+        while pos:
+            for Vertice in Conjunto:
+                self.algoritmo(CopiaAristas, Aristasprim, AristasTemp, Vertice, Conjunto)
+                if len(Conjunto) == len(self.ListaVertices):
+                    pos = False
+        return Aristasprim
+
+    def repetidos(self, CopiaAristas):
+        # elimina las direcciones dobles, elimina las aristas no dirigidas y
+        # las coniverte en dirigidas
+        for elemento in CopiaAristas:
+            for i in range(len(CopiaAristas)):
+                if elemento.getOrigen() == CopiaAristas[i].getDestino() and elemento.getDestino() == CopiaAristas[i].getOrigen():
+                    CopiaAristas.pop(i)
+                    break
+
+    def algoritmo(self, CopiaAristas, Aristasprim, AristasTemp, Vertice, Conjunto):
+        ciclo = False
+        self.agregarAristastemp(CopiaAristas, Vertice, AristasTemp)
+        menor = self.menorCandidata(AristasTemp, Aristasprim, CopiaAristas)  # busco la posible candidata
+        if menor != None:
+            if menor.getOrigen() in Conjunto and menor.getDestino() in Conjunto:  # verifico ciclo
+                ciclo = True
+            if ciclo == False:
+                if not menor.getOrigen() in Conjunto:
+                    Conjunto.append(menor.getOrigen())
+                if not menor.getDestino() in Conjunto:
+                    Conjunto.append(menor.getDestino())
+                Aristasprim.append(menor)
+
+    def agregarAristastemp(self, CopiaAristas, Vertice,
+                           AristasTemp):  # Agrego las aristas que hacen parte del vertice visitado
+        for Arista in CopiaAristas:
+            if Vertice == Arista.getDestino() or Vertice == Arista.getOrigen():
+                if self.verificarTemp(Arista, AristasTemp):
+                    AristasTemp.append(Arista)  # Agrego a temporales o amarillas
+
+    def verificarTemp(self, Arista, AristasTemp):
+        for AristaE in AristasTemp:  # verifico que ya este en las amarillas
+            if AristaE.getOrigen() == Arista.getDestino() and AristaE.getDestino() == Arista.getOrigen():
+                return False
+        return True
+
+    def menorCandidata(self, AristasTemp, Aristasprim, CopiaAristas):
+        menor = CopiaAristas[
+            len(CopiaAristas) - 1]  # es el mayor realmente pero de esta manera realizo los intercambios
+        for i in range(len(AristasTemp)):
+            if AristasTemp[i].getPeso() < menor.getPeso():
+                if self.buscarPrim(Aristasprim, AristasTemp[i]):
+                    menor = AristasTemp[i]
+        AristasTemp.pop(AristasTemp.index(menor))  # la elimino de las temporales amarillas
+        return menor
+
+    def buscarPrim(self, Aristasprim, menor):
+        for Aristap in Aristasprim:
+            if Aristap.getOrigen() == menor.getOrigen() and Aristap.getDestino() == menor.getDestino():
+                return False
+            if Aristap.getOrigen() == menor.getDestino() and Aristap.getDestino() == menor.getOrigen():
+                return False
+        return True
 
     def Kruskal(self):
         copiaAristas = copy(self.ListaAristas)  # copia de las aristas

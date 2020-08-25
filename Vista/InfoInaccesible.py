@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 class InfoInaccesible():
 
-    def __init__(self, app,listafuentes):
+    def __init__(self, app,listafuentes,listaBloqueados):
         self.t1 = Toplevel(app)
         self.t1.geometry('666x496')
         self.t1.title("Caminos Inaccesibles")
@@ -21,12 +21,11 @@ class InfoInaccesible():
 
         for i in listafuentes:
             Label(self.t1,
-                  text=i.getDato(), font=("Verdana", 12)).pack(padx=10, pady=10)
-
+                  text=i.getDato(), font=("Verdana", 10)).pack(padx=10, pady=10)
             Label(self.t1,
-                  text="Se Recomienda Conectar a "+"\n"+i.getDato()+" con", font=("Verdana", 12)).pack(padx=10, pady=10)
-
-            for j in i.getListaAdyacentes():
-              Label(self.t1,text=j,font=("Verdana", 12)).pack(padx=10, pady=10)
+                  text="Se Recomienda Conectar a "+"\n"+i.getDato()+" con", font=("Verdana", 10)).pack(padx=10, pady=10)
+        for j in listaBloqueados:
+            Label(self.t1,
+                  text=j.getDestino(), font=("Verdana", 10)).pack(padx=10, pady=10)
 
         self.t1.wait_window(self.t1)
