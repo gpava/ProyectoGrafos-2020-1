@@ -117,7 +117,7 @@ class VentanaInicial:
         app = VentanaCueva(self.ventana)
         if app.res:
             x = random.randint(90, 830)
-            y = random.randint(40, 600)
+            y = random.randint(40, 550)
             coordenada = [x, y]
             if not self.grafo.verificarvertice(app.origen):
                 self.grafo.ingresarvertice(app.origen, coordenada)
@@ -297,7 +297,7 @@ class VentanaInicial:
 
     def pintarrecorrido(self, listaRecorrido):
         for cont in range(len(listaRecorrido) - 1):
-            #time.sleep(1)
+            time.sleep(1)
             o=self.grafo.obtenervertice(listaRecorrido[cont])
             coordenatesO = o.getCoordenates()
             xO = coordenatesO[0]
@@ -311,7 +311,7 @@ class VentanaInicial:
             self.pintarCamion(d)
             playsound(self.sonidocamion)
             self.canvas.update()
-        time.sleep(2)
+        time.sleep(1)
 
     def pintarCamion(self, vertice):
         imagen = PIL.Image.open('../Imagenes/Camion.png')
@@ -328,14 +328,6 @@ class VentanaInicial:
             self.recorridoprofundidadCuevas(prof.origen)
 
     def rutamascorta(self):
-        self.grafo.setFuentes(0)
-        self.grafo.setListaFuentes([])
-        self.grafo.fuentesgrafo()
-        self.grafo.inaccesible(self.grafo.getListaFuentes())
-        #si hay fuentes ir a dijsktra dirigido
-        if self.grafo.getListaFuentes():
-            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
-        #ventana de la ruta mas corta
         venta = VentanaRuta(self.ventana)
         if venta.res:
             if self.grafo.verificarvertice(venta.origen) and self.grafo.verificarvertice(venta.destino):
@@ -361,29 +353,29 @@ class VentanaInicial:
             messagebox.showwarning('Advertencia',
                          'Los datos ingresados no se encuentran en''\nla base de información''\n\nVerifique los datos ingresados!')
 
-    """def recorridoPrim(self):
+    def recorridoPrim(self):
         prim = VentanaCaminos(self.ventana)
         if prim.res:
             self.recorridoPrimCuevas(prim.origen)
             
     def recorridoPrimCuevas(self,dato):
         if self.grafo.verificarvertice(dato):
-            self.grafo.setFuentes(0)
+            """self.grafo.setFuentes(0)
             self.grafo.setListaFuentes([])
             self.grafo.fuentesgrafo()
-            self.grafo.inaccesible(self.grafo.getListaFuentes())
+            self.grafo.inaccesible(self.grafo.getListaFuentes())"""
             self.pintarrecorridominimo(self.grafo.Prim(dato))
-            if self.grafo.getListaFuentes():
+            """if self.grafo.getListaFuentes():
                 InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())"""
 
-    def recorridoPrim(self):
+    """def recorridoPrim(self):
         self.grafo.setFuentes(0)
         self.grafo.setListaFuentes([])
         self.grafo.fuentesgrafo()
         self.grafo.inaccesible(self.grafo.getListaFuentes())
         self.pintarrecorridominimo(self.grafo.arbolPrim())
         if self.grafo.getListaFuentes():
-            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())
+            InfoInaccesible(self.ventana, self.grafo.getListaFuentes(), self.grafo.getListaBloqueados())"""
 
     def recorridokruskal(self):
         self.grafo.setFuentes(0)
@@ -419,7 +411,7 @@ class VentanaInicial:
             self.pintarCamion(d)
             playsound(self.sonidocamion)
             self.canvas.update()
-        time.sleep(2)
+        time.sleep(1)
 
 
 VentanaInicial()

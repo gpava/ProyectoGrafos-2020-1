@@ -228,14 +228,11 @@ class Grafo():
         Conjunto = []  # almacena los vertices que voy visitando
         AristasTemp = []  # Aristas temporales (las amarillas)
         Aristasprim = []  # Aristas que van a hacer parte de prim (verdes)
-
         # self.nodirigido(CopiaAristas) #convierte a grafo no dirigido
         self.ordenamiento(CopiaAristas)
         self.repetidos(CopiaAristas)  # convierte a un grafo dirigido
-
         menor = CopiaAristas[0]  # Arista menor
         Conjunto.append(menor.getOrigen())  # guardo el primer vertice
-
         pos = True
         while pos:
             for Vertice in Conjunto:
