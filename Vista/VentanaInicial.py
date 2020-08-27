@@ -34,7 +34,7 @@ class VentanaInicial:
         #Creo la etiqueta
         self.labelogo=Label(self.ventana, image=self.centrorecursos).place(x=10, y=10)
         #self.labelogo.grid(row=1,column=0)
-        barraMenu = Menu(self.ventana)
+        barraMenu = Menu(self.ventana) #crea el menú superior
         self.ventana.config(menu=barraMenu)
         self.sonidocamion = '../Datos/camion.mp3'
 
@@ -81,6 +81,7 @@ class VentanaInicial:
         if pahtString != "":
             with open(pahtString, 'r') as content:
                 self.infoJson = json.loads(content.read())
+
         self.canvas = Canvas(self.ventana, width=890, height=580, bg="#4A7B0E")
         self.canvas.place(x=260, y=10)
 
@@ -138,6 +139,8 @@ class VentanaInicial:
             else:
                 messagebox.showwarning('Advertencia',
                      'Los datos ingresados no son validos en''\nla base de información''\n\nVerifique los datos ingresados!')
+        print("-----------------------------------")
+        self.grafo.imprimirvertice()
 
     def fdconexo(self):
         p = self.grafo.numerodepozos()
@@ -222,7 +225,7 @@ class VentanaInicial:
                 self.grafo.agregarBloqueada(verticeOrigen.getDato(), verticeDestino.getDato())
                 self.grafo.eliminarArista(verticeOrigen.getDato(), verticeDestino.getDato())
                 self.pintarCaminoBloqueado(verticeOrigen, verticeDestino)
-                print(self.grafo.verificararista(verticeOrigen.getDato(), verticeDestino.getDato()))
+                #print(self.grafo.verificararista(verticeOrigen.getDato(), verticeDestino.getDato()))
                 Label(self.reporteCanvas,
                 text = "Obstruccion: " + verticeOrigen.getDato() + "\n" +" ---> " + verticeDestino.getDato(),
                                   font = ("Verdana", 10), bg="#4A7B0E").pack(padx=10, pady=1)
@@ -261,7 +264,7 @@ class VentanaInicial:
                 verticeOrigen = self.grafo.obtenervertice(vd.origen)
                 verticeDestino = self.grafo.obtenervertice(vd.destino)
                 self.grafo.desbloqueararista(verticeOrigen.getDato(), verticeDestino.getDato())
-                print(self.grafo.verificararista(verticeOrigen.getDato(), verticeDestino.getDato()))
+                #print(self.grafo.verificararista(verticeOrigen.getDato(), verticeDestino.getDato()))
                 self.despintarCaminoBloqueado(verticeOrigen, verticeDestino)
                 Label(self.reporteCanvas,
                       text="Desbloqueado: " + verticeOrigen.getDato() + "\n"+" --> " + verticeDestino.getDato(),
@@ -269,13 +272,12 @@ class VentanaInicial:
             else:
                 messagebox.showwarning('Advertencia',
                         'Los datos ingresados no son''\nvalidos, por favor ''\n\nVerifique los datos ingresados!')
-        """print("------------------")
+        print("------------------")
         self.grafo.imprimiraristas()
         print("--------------------")
         for Arista in self.grafo.getListaBloqueados():
             print("Origen: {0} - Destino: {1} - Peso: {2}".format(Arista.getOrigen(), Arista.getDestino(),
-                                                                  Arista.getPeso()))"""
-
+                                                                  Arista.getPeso()))
     def recorridoAnchura(self):
         anchu = VentanaCaminos(self.ventana)
         if anchu.res:
@@ -412,6 +414,5 @@ class VentanaInicial:
             playsound(self.sonidocamion)
             self.canvas.update()
         time.sleep(1)
-
 
 VentanaInicial()
